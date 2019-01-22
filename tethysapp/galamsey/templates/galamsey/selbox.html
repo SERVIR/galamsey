@@ -1,0 +1,30 @@
+
+        
+        {% if seloption == 'None' %}
+            <optgroup label="No Legend layer is on"></optgroup>
+        {% else %}
+            <option value=""> Select a layer to compare</option>
+        <optgroup label='USGS Land Use / Land Cover'>
+
+            {% if seloption != 'lulc1975' %} <option value="lulc1975"> 1975 </option> {% endif %}
+            {% if seloption != 'lulc2000'  %} <option value="lulc2000"> 2000 </option> {% endif %}
+            {% if seloption != 'lulc2013' %} <option value="lulc2013"> 2013 </option> {% endif %}
+
+        </optgroup>
+        <optgroup label='Tree Cover'>
+            {% if seloption != 'treecover2013_switch'  %} <option value="2013"> 2013 </option> {% endif %}
+            {% if seloption != 'treecover2014_switch'  %} <option value="2014"> 2014 </option> {% endif %}
+            {% if seloption != 'treecover2015_switch'  %} <option value="2015"> 2015 </option> {% endif %}
+            {% if seloption != 'treecover2016_switch'  %} <option value="2016"> 2016 </option> {% endif %}
+            {% if seloption != 'treecover2017_switch'  %} <option value="2017"> 2017 </option> {% endif %}
+        </optgroup>
+        {% endif %}
+
+        
+
+
+
+
+
+    
+

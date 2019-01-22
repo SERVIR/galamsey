@@ -1,0 +1,746 @@
+{% extends "galamsey/base.html" %}
+{% load tethys_gizmos %}
+{% load staticfiles %}
+{% block header_buttons %}
+<div class="header-button glyphicon-button" data-toggle="tooltip" data-placement="bottom" title="Help">
+    <a data-toggle="modal" data-target="#help-modal"><span class="glyphicon glyphicon-question-sign"></span></a>
+</div>
+{% endblock %}
+{% block app_navigation_override %}
+{% endblock %}
+{% block app_content %}
+{% static 'tethys_apps/css/app_library.css' %}
+<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+<link href="{% static '/galamsey/public/css/vendors/%40coreui/icons/css/coreui-icons.min.css' %} rel=" stylesheet">
+<link href="{% static '/galamsey/public/css/vendors/flag-icon-css/css/flag-icon.min.css' %}rel=" stylesheet">
+<link href="{% static '/galamsey/public/css/vendors/font-awesome/css/font-awesome.min.css' %} rel=" stylesheet">
+<link href="{% static '/galamsey/public/cssvendors/simple-line-icons/css/simple-line-icons.css' %} rel=" stylesheet">
+<link href="{% static '/galamsey/public/css/css/style.css' %} rel=" stylesheet">
+<link href="{% static '/galamsey/public/css/vendors/pace-progress/css/pace.min.css' %} rel=" stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css" />
+<link rel="stylesheet" href="{% static '/galamsey/public/css/leaflet/measure/src/leaflet-ruler.css' %}" media="screen">
+<link rel="stylesheet" href="{% static '/galamsey/public/css/img-comp.css' %}" media="screen">
+<div class="app-body">
+    <div class="sidebar" style="margin-top: 5px;">
+        <nav class="sidebar-nav">
+            <div class="accordion">
+                <h4 class="accordion-toggle active"> Administrative Boundaries</h4>
+                <div class="accordion-content" style="display:block;">
+                    <p>
+                        <div class="aside-options" style="padding: 0px 5px;">
+                            <div class="clearfix mt-4">
+                                <small>
+                          <b>Region</b>
+                        </small>
+                                <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                    <input id="regionCheck" class="switch-input" type="checkbox" checked="">
+                                    <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                </label>
+                                <div class="slidecontainer">
+                                    <input type="range" min="0" max="10" value="10" class="slider" id="region_range">
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="aside-options" style="padding: 0px 5px;">
+                            <div class="clearfix mt-4">
+                                <small>
+                          <b>District</b>
+                        </small>
+                                <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                    <input id="districtCheck" class="switch-input" type="checkbox">
+                                    <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                </label>
+                                <div class="slidecontainer">
+                                    <input type="range" min="0" max="10" value="10" class="slider" id="district_range">
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                </div>
+                <div class="accordion">
+                    <h4 class="accordion-toggle"> Tree Cover Index <i class="fa fa-info-circle lHover opener-1" style="float:right; margin-right:30px;"></i> </h4>
+                    <div class="accordion-content">
+                        <p>
+                            <div class="aside-options" style="padding: 0px 5px;" id="treecoverdiv2013">
+                                <div class="clearfix mt-4">
+                                    <small>
+                                          <b> 2013</b>
+                                        </small>
+                                    <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                        <input id="treecover2013_switch" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                    </label>
+                                    <div class="slidecontainer">
+                                        <input type="range" min="0" max="10" value="10" class="slider" id="treecover2013_range">
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="aside-options" style="padding: 0px 5px;" id="treecoverdiv2014">
+                                <div class="clearfix mt-4">
+                                    <small>
+                                                              <b>2014</b>
+                                                            </small>
+                                    <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                        <input id="treecover2014_switch" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                    </label>
+                                    <div class="slidecontainer">
+                                        <input type="range" min="0" max="10" value="10" class="slider" id="treecover2014_range">
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="aside-options" style="padding: 0px 5px;" id="treecoverdiv2015">
+                                <div class="clearfix mt-4">
+                                    <small>
+                                      <b>2015</b>
+                                    </small>
+                                    <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                        <input id="treecover2015_switch" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                    </label>
+                                    <div class="slidecontainer">
+                                        <input type="range" min="0" max="10" value="10" class="slider" id="treecover2015_range">
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="aside-options" style="padding: 0px 5px;" id="treecoverdiv2016">
+                                <div class="clearfix mt-4">
+                                    <small>
+                              <b>2016</b>
+                            </small>
+                                    <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                        <input id="treecover2016_switch" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                    </label>
+                                    <div class="slidecontainer">
+                                        <input type="range" min="0" max="10" value="10" class="slider" id="treecover2016_range">
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="aside-options" style="padding: 0px 5px;" id="treecoverdiv2017">
+                                <div class="clearfix mt-4">
+                                    <small>
+                              <b>2017</b>
+                            </small>
+                                    <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                        <input id="treecover2017_switch" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                    </label>
+                                    <div class="slidecontainer">
+                                        <input type="range" min="0" max="10" value="10" class="slider" id="treecover2017_range">
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <!-- Illegal Mining Div -->
+                <div class="accordion">
+                    <h4 class="accordion-toggle"> Illegal Mining   <i class="fa fa-info-circle lHover opener-5" style="float:right; margin-right:30px;"></i>  </h4>
+                    <div class="accordion-content">
+                        <p>
+                            <!-- Button and Slider to call Illegal Mining -->
+                            <div class="aside-options" style="padding: 0px 5px;" id="treecoverdiv2013">
+                                <div class="clearfix mt-4">
+                                    <small>
+                                          <b> Illegal Mining </b>
+                                        </small>
+                                    <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                        <input id="illglmng" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                    </label>
+                                    <div class="slidecontainer">
+                                        <input type="range" min="0" max="10" value="10" class="slider" id="illglmngRange2017">
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <!-- Button and Slider to call Protected Layers -->
+                            <div class="aside-options" style="padding: 0px 5px;" id="treecoverdiv2013">
+                                <div class="clearfix mt-4">
+                                    <small>
+                                          <b> Protected Areas </b>
+                                        </small>
+                                    <label class="switch switch-label switch-pill switch-success switch-sm float-right">
+                                        <input id="protectedareas" class="switch-input" type="checkbox">
+                                        <span class="switch-slider" data-checked="On" data-unchecked="Off"></span>
+                                    </label>
+                                    <div class="slidecontainer">
+                                        <input type="range" min="0" max="10" value="10" class="slider" id="protectedareasRange2017">
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </p>
+                        <!-- <button id="opener-6">Open Dialog</button> -->
+                    </div>
+                </div>
+        </nav>
+        <br>
+        <br>
+    </div>
+    <main class="main">
+        <div class="container-fluid" style="padding: 0px;">
+            <div style="width: 100%; height: 94vh; overflow:hidden;" class="img-comp-container">
+                <!--    <div style="background-color:white; height: 100%;"> -->
+                <div class="right-side img-comp-img" id='map' style="width:100%;height:100vh;position:absolute;overflow:hidden;">
+                    <!-- /input-group -->
+                </div>
+                <div id="toolbar" class="no-print">
+                    <div class="tool-icon">
+                        <img id='basemap' title="Base Map" src="{% static 'map2/img/mapicon/basemap.png' %}" style="width:30px;height:30px;">
+                                </div>
+                        <div class="tool-icon" style="margin-top:10px;">
+                            <img id='swiftbtn' title="Base Map" src="{% static 'map2/img/mapicon/extent.png' %}" style="width:30px;height:30px;">
+                                </div>
+                        </div>
+                        <div class="basemap-box glass no-print" style="background-color:rgba(255, 255, 255, 0.4);">
+                            <div class="" id='satellite'>
+                                <img src='{% static "map2/img/mapicon/here_satelliteday.png" %}' style="width:100px;height:100px;margin:10px;" alt="">
+                                </div>
+                                <div class="" id='cartodb'>
+                                    <img src='{% static "map2/img/mapicon/cartodb_positron.png" %}' style="width:100px;height:100px;margin:10px;" alt="">
+                                </div>
+                                    <div class="btn-active" id='openstreetmap'>
+                                        <img src='{% static "map2/img/mapicon/openstreetmap_de.png" %}' style="width:100px;height:100px;margin:10px;" alt="">
+                                </div>
+                                    </div>
+                                    <!-- /input-group -->
+                                    <div class='search-box'>
+                                        <div id='searchtext' style="background: #fff;"> </div>
+                                    </div>
+                                    <div class="right-side img-comp-img img-comp-overlay" id='map2' style="width:100%;height:100%;position:relative;overflow:hidden; background:rgba(0,0,0,0.1); z-index:999;">
+                                        <div style="width:30%; height: 30px; right: 0px; position: absolute; z-index:99999;">
+                                            <select class="form-control" id='comparesel'>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- /input-group -->
+                                </div>
+                                <!--   </div> -->
+                            </div>
+                        </div>
+    </main>
+</div>
+<!-- Tree cover & Tree density -->
+<div id="dialog-1" title="Legend">
+    <div class="row">
+        <img src="/static/map2/img/legend1.JPG">
+            </div>
+    </div>
+    <!-- USGS -->
+    <div id="dialog-2" title="Legend">
+        <div class="row">
+            <img src="/static/map2/img/legend2.JPG">
+            </div>
+        </div>
+        <!-- Charcoal -->
+        <div id="dialog-3" title="Legend">
+            <div class="row">
+                <!-- <img src="/static/map2/img/legend1.JPG"> -->
+                <br>
+                <br>
+                <p>No Data Available Yet !!</p>
+                <br>
+                <br>
+            </div>
+        </div>
+        <!-- landegrading -->
+        <div id="dialog-3" title="Legend">
+            <div class="row">
+                <!-- <img src="/static/map2/img/legend1.JPG"> -->
+                <br>
+                <br>
+                <p>No Data Available Yet !!</p>
+                <br>
+                <br>
+            </div>
+        </div>
+        <!-- illegal-mining -->
+        <div id="dialog-5" title="Legend">
+            <div class="row">
+                <img src="/static/map2/img/legend5.JPG">
+            </div>
+            </div>
+            <script src="{% static 'galamsey/vendors/jquery/js/jquery.min.js' %}"></script>
+            <!-- <script src="{% static 'galamsey/leaflet/leaflet.js"></script> -->
+            <!-- <script src="{% static 'galamsey/js/leaflet-src.js' %}"></script> -->
+            <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
+            <script src="{% static 'galamsey/vendors/jquery/js/custom.js' %}"></script>
+            <script src="{% static 'galamsey/vendors/popper.js/js/popper.min.js' %}"></script>
+            <script src="{% static 'galamsey/vendors/bootstrap/js/bootstrap.min.js' %}"></script>
+            <script src="{% static 'galamsey/vendors/pace-progress/js/pace.min.js' %}"></script>
+            <script src="{% static 'galamsey/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js' %}"></script>
+            <script src="{% static 'galamsey/vendors/%40coreui/coreui-pro/js/coreui.min.js' %}"></script>
+            <script src="{% static 'galamsey/leaflet/leaflet.browser.print.js' %}"></script>
+            <script src="{% static 'galamsey/leaflet/measure/src/leaflet-ruler.js' %}"></script>
+            <script src="{% static 'galamsey/leaflet/L.Map.Sync.js' %}"></script>
+            <script src="{% static 'galamsey/js/img-comp.js' %}"></script>
+            <script src="{% static 'galamsey/js/map_index.js' %}"></script>
+            <script type="text/javascript">
+            $(document).ready(function() {
+
+
+                // $(function() {
+                //     // Tree cover & Tree density
+                //     $("#dialog-1").dialog({
+                //         autoOpen: false,
+                //         "width": "auto",
+                //         "height": "auto",
+                //         resize: function(event, ui) {
+                //             $(this).dialog("option", "title",
+                //                 ui.size.height + " x " + ui.size.width);
+                //         }
+                //     });
+                //     $(".opener-1").click(function() {
+                //         $("#dialog-1").dialog("open");
+                //     });
+                // });
+
+                // $(function() {
+                //     //USGS
+                //     $("#dialog-2").dialog({
+                //         autoOpen: false,
+                //         "width": "auto",
+                //         "height": "auto",
+                //         resize: function(event, ui) {
+                //             $(this).dialog("option", "title",
+                //                 ui.size.height + " x " + ui.size.width);
+                //         }
+                //     });
+
+                //     $(".opener-2").click(function() {
+                //         $("#dialog-2").dialog("open");
+                //     });
+                // });
+
+                // $(function() {
+                //     // Charcoal
+                //     $("#dialog-3").dialog({
+                //         autoOpen: false,
+                //         "width": "auto",
+                //         "height": "auto",
+                //         resize: function(event, ui) {
+                //             $(this).dialog("option", "title",
+                //                 ui.size.height + " x " + ui.size.width);
+                //         }
+                //     });
+
+                //     $(".opener-3").click(function() {
+                //         $("#dialog-3").dialog("open");
+                //     });
+                // });
+
+                // $(function() {
+                //     //landegrading
+                //     $("#dialog-4").dialog({
+                //         autoOpen: false,
+                //         "width": "auto",
+                //         "height": "auto",
+                //         resize: function(event, ui) {
+                //             $(this).dialog("option", "title",
+                //                 ui.size.height + " x " + ui.size.width);
+                //         }
+                //     });
+
+                //     $(".opener-4").click(function() {
+                //         $("#dialog-4").dialog("open");
+                //     });
+                // });
+
+
+                // $(function() {
+                //     //landegrading
+                //     $("#dialog-5").dialog({
+                //         autoOpen: false,
+                //         "width": "auto",
+                //         "height": "auto",
+                //         resize: function(event, ui) {
+                //             $(this).dialog("option", "title",
+                //                 ui.size.height + " x " + ui.size.width);
+                //         }
+                //     });
+
+                //     $(".opener-5").click(function() {
+                //         $("#dialog-5").dialog("open");
+                //     });
+                // });
+
+
+
+
+
+
+                $('.basemap-box').slideToggle();
+                $('#basemap').on('click', function() {
+                    $('.basemap-box').slideToggle();
+                })
+
+
+
+
+                $(".basemap-box > div").on('click', function() {
+                    var basename = $(this).attr('id');
+                    if (initialbasemap) {
+                        map.removeLayer(initialbasemap)
+                    }
+                    $('.basemap-box > div').removeClass("btn-active")
+                    $(this).addClass("btn-active")
+                    if (basename == 'satellite') {
+                        initialbasemap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+                        });
+                    } else if (basename == 'cartodb') {
+                        initialbasemap = L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+                            maxZoom: 18,
+                            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        });
+
+                    } else if (basename == 'openstreetmap') {
+                        initialbasemap = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        });
+
+                    }
+                    initialbasemap.addTo(map);
+                    initialbasemap.bringToBack();
+                })
+
+                checkvis = true;
+                $('#map2').hide();
+                $('.img-comp-slider').hide();
+                //swipe button
+                $("#swiftbtn").on('click', function() {
+                    if (checkvis) {
+                        $('#map2').show();
+                        $('.img-comp-slider').show();
+                        // compararray.push('swipebtn');
+                        map.sync(map2);
+                        checkvis = false;
+                    } else {
+                        $('#map2').hide();
+                        $('.img-comp-slider').hide();
+                        map.unsync(map2);
+                        checkvis = true;
+                        // removearray(compararray, 'swipebtn');
+                    }
+                });
+
+
+                let orig;
+                $("#comparesel").on('change', function() {
+                    let switchvalue = $(this).val();
+                    $(`.comopt option[value='${switchvalue}']`).remove();
+                    switch (switchvalue) {
+                        case 'lulc1975':
+                            orig = layerseldefine(map2, LULC1975data, orig);
+                            break;
+                        case 'lulc2000':
+                            orig = layerseldefine(map2, LULC2000data, orig);
+                            break;
+                        case 'lulc2013':
+                            orig = layerseldefine(map2, LULC2013data, orig);
+                            break;
+                        case '2013':
+                        case '2014':
+                        case '2015':
+                        case '2016':
+                        case '2017':
+                            orig = layerseldefine(map2, dictvalue[switchvalue], orig);
+                            break;
+                        default:
+                            alert("choose a layer....")
+                    }
+                    //layerseldefine(map2, )
+                });
+
+
+
+
+                $(".close").on("click", function() {
+                    $(this).addClass("hidden");
+                    $(".left-side").css("width", "2.2%");
+                    $(".accordion-container").addClass("hidden");
+                    $(".left-side > div").addClass("hidden");
+                    $(".right-side").css("width", "97.8%");
+                    $(".open").removeClass("hidden");
+
+                });
+
+                $(".open").on("click", function() {
+                    $(this).addClass("hidden");
+                    $(".left-side").css("width", "20%");
+                    $(".left-side > div").removeClass("hidden");
+                    $(".accordion-container").removeClass("hidden");
+                    $(".right-side").css("width", "80%");
+                    $(".close").removeClass("hidden");
+
+                });
+
+                $('.accordion').find('.accordion-toggle').click(function() {
+                    $(this).next().slideToggle('600');
+                });
+                $('.accordion-toggle').on('click', function() {
+                    $(this).toggleClass('active').siblings().removeClass('active');
+                });
+
+
+
+
+
+
+                /////////////////////LOADING ALL VECTOR LAYER  //////////////////////////////////////////////////////
+                const geoserverUrl = "http://socrates.cersgis.org:8080/geoserver/cite/wms?";
+
+                let regiondata = loadVectorlayerfunction(geoserverUrl, "REGION");
+                layerdefine(map, 'regionCheck', 'regionvalue', '#region_range', 'regionrangervalue', regiondata, true);
+
+                let districtdata = loadVectorlayerfunction(geoserverUrl, "DISTRICT");
+                layerdefine(map, 'districtCheck', 'districtvalue', '#district_range', 'districtrangervalue', districtdata);
+
+                let constituencydata = loadVectorlayerfunction(geoserverUrl, "CONSTITUENCY");
+                layerdefine(map, 'constituencyCheck', 'constituencyvalue', '#constituency_range', 'constituencyrangevalue', districtdata);
+
+                /////////////////////  END VECTOR LAYER  //////////////////////////////////////////////////////
+
+                /////////////////////LOADING RASTER LAYER   ////////////////////////////////////////////////////
+                let LULC1975data = loadVectorlayerfunction(geoserverUrl, "LULC_1975_ghana");
+                layerdefine(map, 'lulc1975', 'LULC1975value', '#lulc1975Range', 'LULC1975rangervalue', LULC1975data);
+
+
+                let LULC2013data = loadVectorlayerfunction(geoserverUrl, "LULC_2013_Ghana");
+                layerdefine(map, 'lulc2013', 'LULC2013value', '#lulc2013Range', 'LULC2013rangervalue', LULC2013data);
+
+
+                let LULC2000data = loadVectorlayerfunction(geoserverUrl, "LULC_2000_ghana");
+                layerdefine(map, 'lulc2000', 'LULC2000value', '#lulc2000Range', 'LULC2000rangervalue', LULC2000data);
+
+
+                let illegalminingdata = loadVectorlayerfunction(geoserverUrl, "Illegal_Mining_Sites");
+                layerdefine(map, 'illglmng', 'illglmngvalue', '#illglmngRange2017', 'illglmng2017rangervalue', illegalminingdata);
+
+                let protectedareasdata = loadVectorlayerfunction(geoserverUrl, "Protected_Area");
+                layerdefine(map, 'protectedareas', 'protectedareasvalue', '#protectedareasRange2017', 'protectedareas2017rangervalue', protectedareasdata);
+
+
+
+
+
+                let yearrange = [2013, 2014, 2015, 2016, 2017];
+                let dictvalue = {};
+                $.each(yearrange, function(index, value) {
+                    $.get('/apps/galamsey/ajaxrequest/?selyear=' + value, function(res) {
+                        if (res.mapid == 'error') {
+                            $(`#treecoverdiv${value}`).hide()
+                        } else {
+                            dictvalue[value] = L.tileLayer(`https://earthengine.googleapis.com/map/${res.mapid}/{z}/{x}/{y}?token=${res.token}`)
+                            layerdefine(map, `treecover${value}_switch`, `checked_treecover${value}`, `#treecover${value}_range`, `treecover${value}_value`, dictvalue[value])
+                        }
+
+                    });
+                });
+
+
+                $.get('/apps/galamsey/changesel/', function(data) { $('#comparesel').html(data) });
+
+                $(document).ajaxStop(function() {
+                    $('#mapoverlay').hide();
+                });
+
+                $(document).ajaxStart(function() {
+                    $('#mapoverlay').show();
+                });
+
+
+                var options = [];
+
+                $('.dropdown-menu a').on('click', function(event) {});
+
+                // var $target = $( event.currentTarget ),
+                //     val = $target.attr( 'data-value' ),
+                //     $inp = $target.find( 'input' ),
+                //     idx;
+
+                // if ( ( idx = options.indexOf( val ) ) > -1 ) {
+                //    options.splice( idx, 1 );
+                //    setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
+                // } else {
+                //    options.push( val );
+                //    setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+                // }
+
+                // $( event.target ).blur();
+
+                // console.log( options );
+                // return false;
+                $('.dropdown-menu a').on('click', function(event) {});
+
+            });
+
+
+            // function zoomToFeaturer(e, feature) {
+            //           map.fitBounds(e.target.getBounds());
+
+            //       }
+
+
+
+
+
+            function onEachFeature(feature, layer) {
+                // layer.on({
+                //              // mouseover: highlightFeaturer,
+                //              // mouseout: resetHighr,
+                //              click: zoomToFeaturer
+                //          });
+
+
+
+                html = ('<div class="row custyle">')
+                html += (' <table class="table table-striped custab" style="font-size:13px;" >')
+                html += ('<thead>')
+                html += ('<tr>')
+                html += ('<th colspan="2" style="color:#39709c;"> Attribute Table</th>')
+                html += ('</tr>')
+                html += ('</thead>')
+                html += (' <tr>')
+                html += (' <th>Data Source :</th>')
+                html += ('<td>' + feature.properties.datasource + '</td>')
+                html += ('</tr>')
+                html += ('<tr>')
+                html += ('<th> External diameter :</th>')
+                html += ('<td>' + feature.properties.ext_diameter + ' meters</td>')
+                html += (' </tr>')
+                html += ('<tr>')
+                html += (' <th>Internal diameter :</th>')
+                html += ('<td>' + feature.properties.int_diameter + ' meters</td>')
+                html += ('  </tr>')
+
+                html += ('<tr>')
+                html += (' <th>Type :</th>')
+                html += ('<td>' + feature.properties.type + '</td>')
+                html += ('  </tr>')
+
+                html += ('<tr>')
+                html += (' <th>Date :</th>')
+                html += ('<td>' + feature.properties.date + '</td>')
+                html += ('  </tr>')
+
+
+                html += (' </table>')
+                html += ('</div>')
+
+
+
+
+                layer.bindPopup(html, );
+            }
+
+
+            function totitlefunction(txt) {
+                var currVal = txt;
+                try {
+
+                    currVal = currVal.toLowerCase().replace(/\b[a-z]/g, function(txtVal) {
+                        return txtVal.toUpperCase();
+                    });
+                } catch (err) {}
+                return currVal;
+            }
+
+
+            function getColor(d) {
+                return d == 2016 ? '#073' :
+                    d == 2017 ? '#28e' :
+
+                    '#FFEDA0';
+            }
+
+            // function getStroke(d) {
+
+            //        return d = 2016 ? '#de2d26' :
+            //            d = 2017 ? '#fff' :
+            //            '#FFEDA0';
+            //    }
+            function charcoal(feature) {
+                return {
+                    fillColor: getColor(feature.properties.dateyear),
+                    color: '#fff',
+                    weight: '1.1',
+                    dashArray: '',
+                    opacity: '1',
+                    fillopacity: '0.5',
+                };
+
+            }
+
+
+
+
+            // { % for aa in year % }
+
+            // let char { { aa.date.year } }
+            // $('.checkdate').on('change', function() {
+            //     let id = $(this).attr("id")
+
+            //     let man = $('.checkdate').is(':checked');
+            //     if (man == true) {
+
+
+            //         $.get('/illegalminning/charcoalpoints/' + id, function(data) {
+            //             // let  char{{aa.date.year}}
+
+            //             char { { aa.date.year } } = new L.GeoJSON(data, {
+            //                 pointToLayer: function(feature, latlng) {
+            //                     return L.circleMarker(latlng);
+            //                 },
+            //                 style: charcoal,
+            //                 onEachFeature: onEachFeature
+            //             }).addTo(map)
+
+            //         })
+
+
+
+
+            //     } else {
+
+            //         map.removeLayer(char { { aa.date.year } });
+
+            //     }
+
+            // })
+
+
+            // { % endfor % }
+            </script>
+            {% endblock %}
+            {# Use the after_app_content block for modals #}
+            {% block after_app_content %}
+            <!-- Example Modal -->
+            <div class="modal fade" id="help-modal" tabindex="-1" role="dialog" aria-labelledby="help-modal-label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h5 class="modal-title" id="help-modal-label">Example Modal</h5>
+                        </div>
+                        <div class="modal-body">
+                            <p>You can add custom buttons to the app header using the <code>header_buttons</code> block. Use anchor/link tags for the button and wrap it in a div with the class <code>header-button</code>. For buttons with the gliphyicons, add the <code>glyphicon-button</code> class as well.</p>
+                            <p>Ever have trouble using a modal in a Tethys app? Use the <code>after_app_content</code> block for modal content to allow them to function properly. See: <a href="https://getbootstrap.com/javascript/#modals">Bootstrap Modals</a></p>
+                            <p>Add tooltips to any element by adding the <code>data-toggle</code>, <code>data-placement</code>, and <code>title</code> attributes to the button. See: <a href="https://getbootstrap.com/javascript/#tooltips">Bootstrap Tooltips</a></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endblock %}
